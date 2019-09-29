@@ -5,14 +5,36 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --experimental-modules server.js "
+    "start": "nodemon --experimental-modules server.js ",
+    "dev": "webpack --config webpack.dev.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "buefy": "^0.8.4",
+    "bulma": "^0.7.5",
+    "bulmaswatch": "^0.7.5",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
+    "node-cron": "^2.0.3",
     "nodemon": "^1.19.2",
-    "puppeteer": "^1.20.0"
+    "puppeteer": "^1.20.0",
+    "vue": "^2.6.10",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "dart-sass": "^1.22.12",
+    "fibers": "^4.0.1",
+    "html-webpack-plugin": "^4.0.0-beta.8",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "vue-loader": "^15.7.1",
+    "vue-template-compiler": "^2.6.10"
   }
 }

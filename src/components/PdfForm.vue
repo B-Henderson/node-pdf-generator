@@ -48,6 +48,7 @@
 <script>
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -60,16 +61,41 @@ export default {
     async getPdf() {
       switch (this.activeTab) {
         case 0: {
-          const response = await fetch("/generate-pdf", {
-            method: "POST",
-            resposeType: "arraybuffer",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/pdf"
-            },
-            redirect: "follow",
-            body: JSON.stringify(this.pdfurl)
-          });
+          // const response = await fetch("/generate-pdf", {
+          //   method: "POST",
+          //   resposeType: "arraybuffer",
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //     Accept: "application/pdf"
+          //   },
+          //   redirect: "follow",
+          //   body: JSON.stringify(this.pdfurl)
+          // });
+          axios
+            .post(
+              "/generate-pdf",
+              {
+                url: "https://www.visitscotland.com"
+              },
+              {
+                headers: {},
+                responseType: "arraybuffer"
+              }
+            )
+            .then(response => {
+              const blob = new Blob([response.data], {
+                type: "application/octet-stream"
+              });
+
+              const blobURL = window.URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.style.display = "none";
+              document.body.appendChild(link);
+              link.href = blobURL;
+              link.setAttribute("download", "your_pdf.pdf");
+              link.click();
+              document.body.removeChild(link);
+            });
 
           break;
         }

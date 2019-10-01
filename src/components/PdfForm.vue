@@ -4,7 +4,7 @@
       <b-tab-item label="From URL" icon="application">
         <section>
           <b-field abel="Url">
-            <b-input placeholder="URL" type="url" v-model="pdfurl.url"></b-input>
+            <b-input placeholder="URL" type="url" v-model="url"></b-input>
           </b-field>
         </section>
       </b-tab-item>
@@ -33,49 +33,29 @@
           </span>
         </div>
       </b-tab-item>
-      <!-- <b-tab-item label="From Creator" icon="lead-pencil">
-        <section>
-          <b-field abel="Url">
-            <b-input placeholder="URL" type="url"></b-input>
-          </b-field>
-        </section>
-      </b-tab-item>-->
     </b-tabs>
     <b-button @click="getPdf">Submit</b-button>
-    <b-button @click="downloadPdf">Download PDF</b-button>
   </form>
 </template>
 <script>
-import "core-js/stable";
-import "regenerator-runtime/runtime";
 import axios from "axios";
 export default {
   data() {
     return {
       activeTab: 0,
       dropFiles: [],
-      pdfurl: { url: "https://www.visitscotland.com" }
+      url: ""
     };
   },
   methods: {
-    async getPdf() {
+    getPdf() {
       switch (this.activeTab) {
         case 0: {
-          // const response = await fetch("/generate-pdf", {
-          //   method: "POST",
-          //   resposeType: "arraybuffer",
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //     Accept: "application/pdf"
-          //   },
-          //   redirect: "follow",
-          //   body: JSON.stringify(this.pdfurl)
-          // });
           axios
             .post(
               "/generate-pdf",
               {
-                url: "https://www.visitscotland.com"
+                url: this.url
               },
               {
                 headers: {},
@@ -85,6 +65,8 @@ export default {
             .then(response => {
               const blob = new Blob([response.data], {
                 type: "application/octet-stream"
+              }).catch(function(error) {
+                // handle error
               });
 
               const blobURL = window.URL.createObjectURL(blob);

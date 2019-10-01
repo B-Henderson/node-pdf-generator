@@ -1,7 +1,7 @@
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const path = require('path')
-const compiler = require('vue-template-compiler')
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const compiler = require('vue-template-compiler');
 module.exports = {
   watch: true,
   entry: './src/index.js',
@@ -46,4 +46,4 @@ module.exports = {
     new HtmlWebpackPlugin({ template: 'src/index.html' })
   ],
   resolve: { alias: { vue: 'vue/dist/vue.esm.js' } }
-}
+};

@@ -9,16 +9,7 @@ const presets = [
         firefox: '60',
         chrome: '67',
         safari: '11.1'
-      },
-      corejs: { version: 3, proposals: true },
-      plugins: [
-        [
-          '@babel/plugin-transform-runtime',
-          {
-            regenerator: true
-          }
-        ]
-      ]
+      }
     }
   ]
 ];

@@ -1,10 +1,10 @@
 <template>
-  <form action="/generate-pdf" type="post">
+  <div>
     <b-tabs type="is-toggle" expanded v-model="activeTab">
       <b-tab-item label="From URL" icon="application">
         <section>
           <b-field abel="Url">
-            <b-input placeholder="URL" type="url" v-model="url"></b-input>
+            <b-input placeholder="URL" type="url" v-model="url" @keyup.native.enter="getPdf"></b-input>
           </b-field>
         </section>
       </b-tab-item>
@@ -34,8 +34,11 @@
         </div>
       </b-tab-item>
     </b-tabs>
+
     <b-button @click="getPdf">Submit</b-button>
-  </form>
+
+    <b-loading :is-full-page="isFullPage" :active.sync="isLoading" :can-cancel="false"></b-loading>
+  </div>
 </template>
 <script>
 import axios from "axios";
@@ -44,13 +47,17 @@ export default {
     return {
       activeTab: 0,
       dropFiles: [],
-      url: ""
+      url: "",
+      errors: [],
+      isLoading: false,
+      isFullPage: true
     };
   },
   methods: {
     getPdf() {
       switch (this.activeTab) {
         case 0: {
+          this.isLoading = true;
           axios
             .post(
               "/generate-pdf",
@@ -59,16 +66,14 @@ export default {
               },
               {
                 headers: {},
-                responseType: "arraybuffer"
+                responseType: "blob"
               }
             )
             .then(response => {
+              this.isLoading = false;
               const blob = new Blob([response.data], {
                 type: "application/octet-stream"
-              }).catch(function(error) {
-                // handle error
               });
-
               const blobURL = window.URL.createObjectURL(blob);
               const link = document.createElement("a");
               link.style.display = "none";
@@ -77,6 +82,17 @@ export default {
               link.setAttribute("download", "your_pdf.pdf");
               link.click();
               document.body.removeChild(link);
+            })
+            .catch(error => {
+              //response tyle is blob and needs converted with file reader
+              const reader = new FileReader();
+
+              reader.onload = event => {
+                this.errors = JSON.parse(event.srcElement.result);
+                this.errorMessage();
+              };
+
+              reader.readAsText(error.response.data);
             });
 
           break;
@@ -87,7 +103,17 @@ export default {
         }
       }
     },
-    downloadPdf() {}
+    errorMessage() {
+      this.isLoading = false;
+      let error = this.errors.errors[0];
+      this.$buefy.notification.open({
+        message: `${error.msg} in field ${error.param}`,
+        position: "is-bottom-right",
+        type: "is-danger",
+        hasIcon: true,
+        duration: 5000
+      });
+    }
   }
 };
 </script>

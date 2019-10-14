@@ -42,6 +42,7 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
   data() {
     return {
@@ -84,7 +85,7 @@ export default {
               document.body.removeChild(link);
             })
             .catch(error => {
-              //response tyle is blob and needs converted with file reader
+              // response tyle is blob and needs converted with file reader
               const reader = new FileReader();
 
               reader.onload = event => {
@@ -101,11 +102,14 @@ export default {
           console.log("tab 1 active");
           break;
         }
+        default: {
+          throw new Error("no default specified");
+        }
       }
     },
     errorMessage() {
       this.isLoading = false;
-      let error = this.errors.errors[0];
+      const error = this.errors.errors[0];
       this.$buefy.notification.open({
         message: `${error.msg} in field ${error.param}`,
         position: "is-bottom-right",

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <b-tabs type="is-toggle" expanded v-model="activeTab">
       <b-tab-item label="From URL" icon="application">
         <section>
@@ -106,6 +106,9 @@ export default {
           throw new Error("no default specified");
         }
       }
+    },
+    deleteDropFile(index) {
+      console.log(index);
     },
     errorMessage() {
       this.isLoading = false;

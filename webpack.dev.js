@@ -2,8 +2,9 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const compiler = require('vue-template-compiler');
+
 module.exports = {
-  watch: true,
+  watch: false,
   entry: './src/index.js',
   mode: 'development',
   output: { path: path.join(__dirname, '/public') },

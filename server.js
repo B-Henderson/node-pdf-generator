@@ -2,10 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 5000;
 const path = require('path');
-const pdfPage = require('./src/js/pdf');
 const { check, validationResult, sanitizeBody } = require('express-validator');
+const pdfPage = require('./src/js/pdf');
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -22,7 +22,7 @@ app.post(
       return res.status(422).json({ errors: errors.array() });
     }
 
-    let pdf = await pdfPage.PdfFromUrl(req.body.url);
+    const pdf = await pdfPage.PdfFromUrl(req.body.url);
     res.set({
       'Content-Type': 'application/pdf',
       'Content-Length': pdf.length

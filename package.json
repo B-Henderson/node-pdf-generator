@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --config webpack.dev.js && nodemon --experimental-modules server.js ",
+    "start": "webpack --config webpack.dev.js && node --experimental-modules server.js ",
     "dev": "webpack --config webpack.dev.js"
   },
   "author": "",

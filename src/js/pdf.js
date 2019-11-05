@@ -1,10 +1,14 @@
-var puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer');
+
 module.exports = class PdfPage {
   static async PdfFromUrl(url) {
-    const browser = await puppeteer.launch({ headless: true })
-    const page = await browser.newPage()
-    await page.goto(url, { waitUntil: 'domcontentloaded' })
-    await page.emulateMedia('screen')
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    const page = await browser.newPage();
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await page.emulateMedia('screen');
     const pdf = await page.pdf({
       format: 'A4',
       printBackground: true,
@@ -14,12 +18,13 @@ module.exports = class PdfPage {
         left: '2.54cm',
         right: '2.54cm'
       }
-    })
+    });
 
-    await browser.close()
-    return pdf
+    await browser.close();
+    return pdf;
   }
+
   getRandomHash() {
-    return Math.random().toString(36)
+    return Math.random().toString(36);
   }
-}
+};
